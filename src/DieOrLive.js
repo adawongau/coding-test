@@ -100,15 +100,21 @@ export default class DieOrLive {
 
     updateColValue = function (row, col) {
         const total = this.getAllNeighbours(row, col);
-        if (total == 1 || total < 1) {
-            return false;
-        } else if (total == 4 || total > 4) {
-            return false;
-        } else if (total === 2 || total === 3) {
-            return true;
-        } else {
-            return this.activeArray[row][col];
+        if(this.activeArray[row][col]){
+            if (total == 1 || total < 1) {
+                return false;
+            } else if (total > 3) {
+                return false;
+            }else  if (total === 2 || total === 3) {
+                return true;
+            }
+        }else{
+          if(total == 3){
+              return true
+          }
         }
     }
+       
+       
 
 }
