@@ -16,3 +16,19 @@ canvas {
   max-height: 960px;
   max-width: 1920px;
 }
+#dieorlive{
+  background:#202020
+}
+.pattern_selection__label{
+  color: white;
+}
+.pattern_selection__description{
+  color: white;
+}
+.bottom_bar{
+  position: fixed;
+  bottom: 0;
+  padding: 20px;
+  background: black;
+  width: 100%;
+}

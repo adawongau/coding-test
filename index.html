@@ -3,28 +3,111 @@
     <link rel="stylesheet" href="./src/index.css" />
   </head>
   <body>
-    <canvas></canvas>
+     <canvas id="dieorlive" ></canvas>
+      <div class="bottom_bar">
+        <div>
+          <span class="pattern_selection__label">select a pattern : </span>
+          <span>
+            <select id="selection" >
+              <option>none</option>
+            </select>
+          </span>
+        </div>
+        <div id="selection_text" class="pattern_selection__description">
+        </div>
+      <button id="start">start</button>
+   </div>
   </body>
   <script type="module">
+  
+  
+   import DieOrLive from './src/DieOrLive.js';
+
     const scale = 4;
     const worldWidth = 480;
     const worldHeight = 240;
-
-    const canvas = document.querySelector("canvas");
+    // const canvas = document.querySelector("canvas");
+    const canvas = document.querySelector("#dieorlive")
     canvas.width = worldWidth * scale;
     canvas.height = worldHeight * scale;
     const ctx = canvas.getContext("2d");
+    let rawData =[]
+    let data =[]
+    let timer = null
+    let selectedPattern =null
+    //create an object from the class
+    const dol = new DieOrLive()
 
+    //get elements to add event listeners
+    let selectionDropDown = document.getElementById("selection");
+    let selectionText = document.getElementById("selection_text");
+    let startButton = document.getElementById("start");
+
+   //data fetching
+    rawData = await makeRequest('GET', '/src/lexicon.json');
+    
+    if(rawData.status==200){
+      data = rawData.response;
+      if(data.length>0){
+        data.forEach (d =>{
+          var x = selectionDropDown;
+          var option = document.createElement("option");
+          option.text = d.name;
+          option.value =d.name
+          x.add(option);
+        })
+      } 
+    }
+
+    //create event listeners 
+    startButton.addEventListener("click", function(value) {
+      clearInterval(timer)
+    
+      let rowData = dol.patternToArray(selectedPattern.pattern)
+      let dataSet = dol.converStringDatatoArr(rowData)
+      dol.constructArr(dataSet);
+      dol.updateDataSets();
+      let genArr =dol.fillingArr();
+      render(genArr)
+      timer=window.setInterval(() => {
+            dol.updateDataSets();
+            let genArr =dol.fillingArr();
+            render(genArr)
+      }, 100)
+    })
+
+    selectionDropDown.addEventListener("change", function(value) {
+          selectedPattern = data.find(element => selectionDropDown.value == element.name);
+          selectionText.textContent=selectedPattern.description
+    });
+  
     const render = (world) => {
       ctx.fillStyle = "#202020";
       ctx.fillRect(0, 0, worldWidth * scale, worldHeight * scale);
       ctx.fillStyle = "green";
       world.forEach((row, y) =>
         row.forEach(
-          (alive, x) =>
-            alive && ctx.fillRect(x * scale, y * scale, scale - 1, scale - 1)
+          (alive, x) =>{
+            alive && ctx.fillRect(x * scale +(canvas.width/2), y * scale +(canvas.height/2), scale - 1, scale - 1)
+          }
         )
       );
     };
+
+    function makeRequest (method, url) {
+        var xhr = new XMLHttpRequest();
+        return new Promise(resolve => {
+          xhr.open(method, url);
+          xhr.onload = () => resolve({
+            status: xhr.status,
+            response: JSON.parse(xhr.responseText)
+          });
+          xhr.onerror = () => resolve({
+            status: xhr.status,
+            response: xhr.responseText
+          });
+         xhr.send();
+        })
+    }
   </script>
 </html>
