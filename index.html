@@ -3,7 +3,39 @@
     <link rel="stylesheet" href="./src/index.css" />
   </head>
   <body>
-    <canvas></canvas>
+    <section id="canvasContainer" class="canvas-container">
+      <canvas></canvas>
+    </section>
+
+    <section id="controls" class="controls-container">
+      <div class="selection-container">
+        <div class="input-controls">
+          <div>
+            <span>Select a pattern</span>
+            <select id="patternSelect"></select>
+          </div>
+          <div class="time-range">
+            <label for="timeInterval">Running speed (Per <output id="timeIntervalOutput">100</output> milliseconds)</label>
+            <input type="range" id="timeInterval" class="range" value="100" min="0" max="500" />
+          </div>
+        </div>
+        <!-- Description -->
+        <div id="descriptionText" class="description"></div>
+      </div>
+      <div class="btn-container">
+        <button id="btnStart" class="btn-start">
+          <span id="btnText" class="btn-text">Start</span>
+          <span id="spinner" class="spinner">
+          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="40" height="40" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+            <path fill="none" stroke="#3e4c63" stroke-width="9" stroke-dasharray="230.93003540039064 25.658892822265614" d="M24.3 30C11.4 30 5 43.3 5 50s6.4 20 19.3 20c19.3 0 32.1-40 51.4-40 C88.6 30 95 43.3 95 50s-6.4 20-19.3 20C56.4 70 43.6 30 24.3 30z" stroke-linecap="round" style="transform:scale(0.85);transform-origin:50px 50px">
+              <animate attributeName="stroke-dashoffset" repeatCount="indefinite" dur="1.4492753623188404s" keyTimes="0;1" values="0;256.58892822265625"></animate>
+            </path>
+            </svg>
+          </span>
+        </button>
+        <div id="runningInfo" class="running-info"></div>
+      </div>
+    </section>
   </body>
   <script type="module" src="index.js"></script>
 
