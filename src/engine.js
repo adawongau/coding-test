@@ -1,4 +1,3 @@
-import { worldHeight, worldWidth } from "../config.js";
 
 const LEXICON_FILE_PATH = "/src/lexicon.json";
 
@@ -7,6 +6,13 @@ const mapping = {
   O: true,
 };
 
+let _worldHeight = 0;
+let _worldWidth = 0;
+
+/**
+ * Reads the data file and returns an array of objects.
+ * @returns {[{name: string, description: string, pattern: string}]}
+ */
 export const getLexiconData = async () => {
   try {
     const response = await fetch(LEXICON_FILE_PATH);
@@ -17,33 +23,52 @@ export const getLexiconData = async () => {
   }
 };
 
+/**
+ * A list of predicates for evaluating cell neighbours.
+ * The predicate returns `true` when a cell is alive at the position, `false` otherwise.
+ */
 const neighbours = {
-  hasNorth:        (y, x, _world) => ((y - 1 > -1) && _world[y - 1][x] === true),
-  hasNorthWest:    (y, x, _world) => ((y - 1 > -1) && (x - 1 > -1) && _world[y - 1][x - 1] === true),
-  hasNorthEast:    (y, x, _world) => ((y - 1 > -1) && (x + 1 < worldWidth) && _world[y - 1][x + 1] === true),
-  hasWest:         (y, x, _world) => ((x - 1 > -1) && _world[y][x - 1] === true),
-  hasEast:         (y, x, _world) => ((x + 1 < worldWidth) && _world[y][x + 1] === true),
-  hasSouth:        (y, x, _world) => ((y + 1 < worldHeight) && _world[y + 1][x] === true),
-  hasSouthWest:    (y, x, _world) => ((y + 1 < worldHeight) && (x - 1 > -1) && _world[y + 1][x - 1] === true),
-  hasSouthEast:    (y, x, _world) => ((y + 1 < worldHeight) && (x + 1 < worldWidth) && _world[y + 1][x + 1] === true)
+  hasNorth:        (y, x, _world) => ((y - 1 > -1) && _world[y - 1][x]),
+  hasNorthWest:    (y, x, _world) => ((y - 1 > -1) && (x - 1 > -1) && _world[y - 1][x - 1]),
+  hasNorthEast:    (y, x, _world) => ((y - 1 > -1) && (x + 1 < _worldWidth) && _world[y - 1][x + 1]),
+  hasWest:         (y, x, _world) => ((x - 1 > -1) && _world[y][x - 1]),
+  hasEast:         (y, x, _world) => ((x + 1 < _worldWidth) && _world[y][x + 1]),
+  hasSouth:        (y, x, _world) => ((y + 1 < _worldHeight) && _world[y + 1][x]),
+  hasSouthWest:    (y, x, _world) => ((y + 1 < _worldHeight) && (x - 1 > -1) && _world[y + 1][x - 1]),
+  hasSouthEast:    (y, x, _world) => ((y + 1 < _worldHeight) && (x + 1 < _worldWidth) && _world[y + 1][x + 1])
 };
 
+/**
+ * Evaluates the predicates for the world position.
+ * The `true` evaluation results will be added to total neighbour count.
+ * @param {number} y index of Y-axies 
+ * @param {number} x index of X-axies
+ * @param {boolean[][]} _world current generation world for lookup
+ * @returns total number of neighbours
+ */
 const identifyNeighbours = (y, x, _world) => Object.values(neighbours)
-                                            .filter(fn => fn(y, x, _world) === true)
+                                            .filter(fn => fn(y, x, _world))
                                             .length;
 
-const executeRules = (y, x, _world) => {
+/**
+ * Evaluates the rules for the cell at the world position. 
+ * @param {number} y index of Y-axies 
+ * @param {number} x index of X-axies
+ * @param {boolean[][]} _world current generation world for lookup
+ * @returns {boolean} evaluation result to be set on the next generation world.
+ */
+const evaluateRules = (y, x, _world) => {
   const totalNeighbours = identifyNeighbours(y, x, _world);
 
-  if (_world[y][x] === true) { // for a live cell
+  if (_world[y][x]) { // for a live cell
     if (totalNeighbours < 2 || totalNeighbours > 3) { // cell with one or no neighbour or more than 3 neighbours dies
       return false;
     } else if (totalNeighbours === 2 || totalNeighbours === 3) { // cell with two or three neighbour servives
       return true;
     }
-  } else if (_world[y][x] === false && totalNeighbours === 3) { // for an empty space a cell with 3 neighbours
+  } else if (!_world[y][x] && totalNeighbours === 3) { // for an empty space a cell with 3 neighbours
     return true;
-  } else {
+  } else { // otherwise return existing value
     return _world[y][x];
   }
 };
@@ -52,10 +77,21 @@ const executeRules = (y, x, _world) => {
 // (world: boolean[][]) => boolean[][]
 // implement your state transition logic here
 export const next = (world) => {
-  let _nextGenWorld = new Array(worldHeight).fill(Array(worldWidth).fill(false));
 
-  for (let y = 0; y < worldHeight; y++) {
-    _nextGenWorld[y] = _nextGenWorld[y].map((colValue, x) => executeRules(y, x, world));
+  if (world.length === 0) {
+    return [];
+  }
+
+  _worldHeight = world.length;
+  _worldWidth = world[0].length;
+
+  // a new next generation world with all dead spaces
+  let _nextGenWorld = new Array(_worldHeight).fill(Array(_worldWidth).fill(false));
+
+  // apply the evaluation results to next generation world.
+  // using map operator to avoid nested loop.
+  for (let y = 0; y < _worldHeight; y++) {
+    _nextGenWorld[y] = _nextGenWorld[y].map((colValue, x) => evaluateRules(y, x, world));
   }
 
   return _nextGenWorld;

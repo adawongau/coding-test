@@ -1,4 +1,3 @@
-import { worldWidth, worldHeight } from "./config.js";
 import { 
   next, parse,
   getLexiconData 
@@ -6,10 +5,13 @@ import {
 
 
 const scale = 4;
-let gameRunning = false;
-let timer;
+const worldWidth = 480;
+const worldHeight = 240;
+
+let _gameRunning = false;
+let _timer;
 const defaultComputeInterval = 100;
-let computeInterval = defaultComputeInterval;
+let _computeInterval = defaultComputeInterval;
 let _currentWorld;
 
 // html elements
@@ -23,14 +25,24 @@ const runningInfo = document.querySelector("#runningInfo");
 const timeInterval = document.querySelector("#timeInterval");
 const timeIntervalOutput = document.querySelector("#timeIntervalOutput");
 
-
+/**
+ * Updates the pattern description on change of selection
+ * @param {string} description will be derived from the pattern object
+ */
 const updateDescription = (description) => {
   descriptionText.innerHTML = description;
 };
 
+/**
+ * Resets the game world.
+ * - Stops the cell production
+ * - Enable user controls
+ * - It fetches the pattern from file based on the selection in the pattern selector.
+ * - Apply pattern at the center of the canvas
+ */
 const resetGame = () => {
-  gameRunning = false;
-  clearTimeout(timer);
+  _gameRunning = false;
+  clearTimeout(_timer);
 
   btnStart.disabled = false;
   btnText.innerHTML = "Start";
@@ -39,7 +51,9 @@ const resetGame = () => {
 
   getLexiconData().then(
     data => {
+      
       let identifiedPattern;
+      // set the first pattern as default pattern if no pattern is selected yet.
       if (!patternSelect.value) {
         updateDescription(data[0].description);
         identifiedPattern = data[0].pattern;
@@ -54,18 +68,26 @@ const resetGame = () => {
 
 };
 
+/**
+ * Sets the given patterns at the center of canvas.
+ * @param {string} pattern 
+ */
 const applyPatternAtCenter = (pattern) => {
   const parsedPattern = parse(pattern);
   
+  // clear the canvas before applying the pattern.
   const _world = Array(worldHeight).fill(Array(worldWidth).fill(false));
 
   if (parsedPattern.length > 0) {
     const patternRows = parsedPattern.length;
     const patternCols = parsedPattern[0].length;
+    // calculate the row and column index of the pattern in the world (center position).
     const worldRowStart = Math.floor((worldHeight - patternRows) / 2);
     const worldColStart = Math.floor((worldWidth - patternCols) / 2);
     const worldRowEnd = (worldRowStart + patternRows);
   
+    // apply the pattern to the world.
+    // using spread operator to avoid nested loop.
     for (let y = worldRowStart; y < worldRowEnd; y++) {
       _world[y] = [
       ..._world[y].slice(0, worldColStart),
@@ -76,10 +98,14 @@ const applyPatternAtCenter = (pattern) => {
   }
 
   _currentWorld = _world;
+
   render(_currentWorld);
 
 };
 
+
+ // Updates the time intervals based on the selected range.
+ // Default 100 (milliseconds).
 timeInterval.addEventListener("input", (e) => {
   timeIntervalOutput.innerHTML = e.target.value;
   const min = e.target.min
@@ -88,23 +114,26 @@ timeInterval.addEventListener("input", (e) => {
   
   e.target.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%'
 
-  computeInterval = e.target.value;
+  _computeInterval = e.target.value;
 });
 
+// Resets game canvas.
 patternSelect.addEventListener("change", (event) => {
   resetGame();
 });
 
+// Initiate cell production
 btnStart.addEventListener('click', (event) => {
   btnText.innerHTML = "Running";
   spinner.classList.add("visible");
   runningInfo.innerHTML = "Please change pattern to reset game.";
 
   btnStart.disabled = true;
-  gameRunning = true;
+  _gameRunning = true;
   startCellProduction();
 });
 
+// Initialise html elements
 const initGameControls = () => {
   
   getLexiconData().then(data => {
@@ -123,7 +152,10 @@ const initGameControls = () => {
 canvas.width = worldWidth * scale;
 canvas.height = worldHeight * scale;
 const ctx = canvas.getContext("2d");
-
+/**
+ * Renders the world on the canvas.
+ * @param {boolean[][]} world 
+ */
 const render = (world) => {
   ctx.fillStyle = "#21252b";
   ctx.fillRect(0, 0, worldWidth * scale, worldHeight * scale);
@@ -136,11 +168,20 @@ const render = (world) => {
   );
 };
 
+/**
+ * Starts cell production.
+ * - Passes the current generation world to the engine, which returns the next generation world.
+ * - Renders the next generation world.
+ * - Executes the cell production on interval.
+*/
 const startCellProduction = () => {
+  
   _currentWorld = next(_currentWorld);
+
   render(_currentWorld);
-  if (gameRunning) {
-    timer = setTimeout(startCellProduction, computeInterval);
+  
+  if (_gameRunning) {
+    _timer = setTimeout(startCellProduction, _computeInterval);
   }
   
 };
