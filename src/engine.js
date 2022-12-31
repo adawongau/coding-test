@@ -1,3 +1,4 @@
+import { create2DArray } from "./util.js";
 
 const LEXICON_FILE_PATH = "/src/lexicon.json";
 
@@ -39,7 +40,6 @@ const neighbours = {
 };
 
 const _neighbourPredicates = Object.values(neighbours);
-const create2DArray = (height, width, defaultValue) => new Array(height).fill(Array(width).fill(defaultValue));
 
 /**
  * Evaluates the predicates for the world position.

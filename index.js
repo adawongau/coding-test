@@ -1,8 +1,8 @@
-import { 
+import {
   next, parse,
-  getLexiconData 
+  getLexiconData
 } from "./src/engine.js";
-
+import { create2DArray } from "./src/util.js";
 
 const scale = 4;
 const worldWidth = 480;
@@ -51,7 +51,7 @@ const resetGame = () => {
 
   getLexiconData().then(
     data => {
-      
+
       let identifiedPattern;
       // set the first pattern as default pattern if no pattern is selected yet.
       if (!patternSelect.value) {
@@ -70,13 +70,13 @@ const resetGame = () => {
 
 /**
  * Sets the given patterns at the center of canvas.
- * @param {string} pattern 
+ * @param {string} pattern
  */
 const applyPatternAtCenter = (pattern) => {
   const parsedPattern = parse(pattern);
-  
+
   // clear the canvas before applying the pattern.
-  const _world = Array(worldHeight).fill(Array(worldWidth).fill(false));
+  const _world = create2DArray(worldHeight, worldWidth, false);
 
   if (parsedPattern.length > 0) {
     const patternRows = parsedPattern.length;
@@ -85,7 +85,7 @@ const applyPatternAtCenter = (pattern) => {
     const worldRowStart = Math.floor((worldHeight - patternRows) / 2);
     const worldColStart = Math.floor((worldWidth - patternCols) / 2);
     const worldRowEnd = (worldRowStart + patternRows);
-  
+
     // apply the pattern to the world.
     // using spread operator to avoid nested loop.
     for (let y = worldRowStart; y < worldRowEnd; y++) {
@@ -94,7 +94,7 @@ const applyPatternAtCenter = (pattern) => {
       ...parsedPattern[y - worldRowStart],
       ..._world[y].slice(worldColStart + patternCols)
       ];
-    }  
+    }
   }
 
   _currentWorld = _world;
@@ -111,7 +111,7 @@ timeInterval.addEventListener("input", (e) => {
   const min = e.target.min
   const max = e.target.max
   const val = e.target.value
-  
+
   e.target.style.backgroundSize = (val - min) * 100 / (max - min) + '% 100%'
 
   _computeInterval = e.target.value;
@@ -135,7 +135,7 @@ btnStart.addEventListener('click', (event) => {
 
 // Initialise html elements
 const initGameControls = () => {
-  
+
   getLexiconData().then(data => {
       data.forEach(pattern => {
         const option = document.createElement("option");
@@ -154,7 +154,7 @@ canvas.height = worldHeight * scale;
 const ctx = canvas.getContext("2d");
 /**
  * Renders the world on the canvas.
- * @param {boolean[][]} world 
+ * @param {boolean[][]} world
  */
 const render = (world) => {
   ctx.fillStyle = "#21252b";
@@ -175,15 +175,15 @@ const render = (world) => {
  * - Executes the cell production on interval.
 */
 const startCellProduction = () => {
-  
+
   _currentWorld = next(_currentWorld);
 
   render(_currentWorld);
-  
+
   if (_gameRunning) {
     _timer = setTimeout(startCellProduction, _computeInterval);
   }
-  
+
 };
 
 initGameControls();
