@@ -1,406 +1,86 @@
 {
-    "patterns": [
-          {
-            "testCase": "Parse pattern 56P6H1V0",
-            "input": ".....OOO..........OOO.....\nOOO.O.......OO.......O.OOO\n....O...O..O..O..O...O....\n....O.....O....O.....O....\n..........OO..OO..........\n.......O...O..O...O.......\n.......O.O......O.O.......\n........OOOOOOOOOO........\n..........O....O..........\n........O........O........\n.......O..........O.......\n........O........O........\n",
-            "output": [
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  true,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  true,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  true,
-                  true,
-                  true,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  true,
-                  true,
-                  true
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  true,
-                  false,
-                  false,
-                  true,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  true,
-                  true,
-                  true,
-                  true,
-                  true,
-                  true,
-                  true,
-                  true,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ],
-              [
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  true,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false,
-                  false
-              ]
-              ]
-          },
-          {
-            "testCase": "Parse pattern 56P6H1V0",
-            "input": "",
-            "output": []
-          }
+  "patterns": [
+    {
+      "testCase": "Parse pattern 56P6H1V0",
+      "input": ".....OOO..........OOO.....\nOOO.O.......OO.......O.OOO\n....O...O..O..O..O...O....\n....O.....O....O.....O....\n..........OO..OO..........\n.......O...O..O...O.......\n.......O.O......O.O.......\n........OOOOOOOOOO........\n..........O....O..........\n........O........O........\n.......O..........O.......\n........O........O........\n",
+      "output": [
+        [false,false,false,false,false,true,true,true,false,false,false,false,false,false,false,false,false,false,true,true,true,false,false,false,false,false],
+        [true,true,true,false,true,false,false,false,false,false,false,false,true,true,false,false,false,false,false,false,false,true,false,true,true,true],
+        [false,false,false,false,true,false,false,false,true,false,false,true,false,false,true,false,false,true,false,false,false,true,false,false,false,false],
+        [false,false,false,false,true,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,true,false,false,false,false],
+        [false,false,false,false,false,false,false,false,false,false,true,true,false,false,true,true,false,false,false,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,true,false,false,false,true,false,false,true,false,false,false,true,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,true,false,true,false,false,false,false,false,false,true,false,true,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false],
+        [false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false,true,false,false,false,false,false,false,false,false]
+      ]
+    },
+    {
+      "testCase": "Parse pattern 56P6H1V0",
+      "input": "",
+      "output": []
+    }
+  ],
+  "worlds": [
+    {
+        "testCase": "Empty world returns empty new generation.",
+        "input": [],
+        "output": []
+    },
+    {
+      "testCase": "Each cell with one or no neighbours dies, as if by solitude.",
+      "input": [
+        [true, false, false],
+        [false, true, false],
+        [false, false, false]
       ],
-    "worlds": [
-        {
-            "testCase": "Each cell with one or no neighbours dies, as if by solitude.",
-            "input":  [
-                [true, false, false],
-                [false, true, false],
-                [false, false, false]
-            ],
-            "output": [
-                [false, false, false],
-                [false, false, false],
-                [false, false, false]
-            ]
-        },
-        {
-            "testCase": "Each cell with four or more neighbours dies, as if by overpopulation.",
-            "input":  [
-                [true, false, true],
-                [true, true, false],
-                [false, true, true]
-            ],
-            "output": [
-                [true, false, false],
-                [true, false, false],
-                [true, true, true]
-            ]
-        },
-        {
-            "testCase": "Each cell with two or three neighbours survives.",
-            "input":  [
-                [true, false, false],
-                [false, true, false],
-                [false, true, false]
-            ],
-            "output": [
-                [false, false, false],
-                [true, true, false],
-                [false, false, false]
-            ]
-        },
-        {
-            "testCase": "For unpopulated space, each cell with three neighbours becomes populated.",
-            "input":  [
-                [true, false, false],
-                [true, false, false],
-                [false, false, true]
-            ],
-            "output": [
-                [false, false, false],
-                [false, true, false],
-                [false, false, false]
-            ]
-        }
-    ]
-  }
-  
+      "output": [
+        [false, false, false],
+        [false, false, false],
+        [false, false, false]
+      ]
+    },
+    {
+      "testCase": "Each cell with four or more neighbours dies, as if by overpopulation.",
+      "input": [
+        [true, false, true],
+        [true, true, false],
+        [false, true, true]
+      ],
+      "output": [
+        [true, false, false],
+        [true, false, false],
+        [true, true, true]
+      ]
+    },
+    {
+      "testCase": "Each cell with two or three neighbours survives.",
+      "input": [
+        [true, false, false],
+        [false, true, false],
+        [false, true, false]
+      ],
+      "output": [
+        [false, false, false],
+        [true, true, false],
+        [false, false, false]
+      ]
+    },
+    {
+      "testCase": "For unpopulated space, each cell with three neighbours becomes populated.",
+      "input": [
+        [true, false, false],
+        [true, false, false],
+        [false, false, true]
+      ],
+      "output": [
+        [false, false, false],
+        [false, true, false],
+        [false, false, false]
+      ]
+    }
+  ]
+}
