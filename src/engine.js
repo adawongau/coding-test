@@ -16,7 +16,7 @@ let _worldWidth = 0;
 export const getLexiconData = async () => {
   try {
     const response = await fetch(LEXICON_FILE_PATH);
-    
+
     return await response.json();
   } catch (err) {
     console.error(err);
@@ -38,21 +38,24 @@ const neighbours = {
   hasSouthEast:    (y, x, _world) => ((y + 1 < _worldHeight) && (x + 1 < _worldWidth) && _world[y + 1][x + 1])
 };
 
+const _neighbourPredicates = Object.values(neighbours);
+const create2DArray = (height, width, defaultValue) => new Array(height).fill(Array(width).fill(defaultValue));
+
 /**
  * Evaluates the predicates for the world position.
  * The `true` evaluation results will be added to total neighbour count.
- * @param {number} y index of Y-axies 
+ * @param {number} y index of Y-axies
  * @param {number} x index of X-axies
  * @param {boolean[][]} _world current generation world for lookup
  * @returns total number of neighbours
  */
-const identifyNeighbours = (y, x, _world) => Object.values(neighbours)
-                                            .filter(fn => fn(y, x, _world))
-                                            .length;
+const identifyNeighbours = (y, x, _world) => _neighbourPredicates
+                                              .filter(fn => fn(y, x, _world))
+                                              .length;
 
 /**
- * Evaluates the rules for the cell at the world position. 
- * @param {number} y index of Y-axies 
+ * Evaluates the rules for the cell at the world position.
+ * @param {number} y index of Y-axies
  * @param {number} x index of X-axies
  * @param {boolean[][]} _world current generation world for lookup
  * @returns {boolean} evaluation result to be set on the next generation world.
@@ -86,7 +89,7 @@ export const next = (world) => {
   _worldWidth = world[0].length;
 
   // a new next generation world with all dead spaces
-  let _nextGenWorld = new Array(_worldHeight).fill(Array(_worldWidth).fill(false));
+  let _nextGenWorld = create2DArray(_worldHeight, _worldWidth, false);
 
   // apply the evaluation results to next generation world.
   // using map operator to avoid nested loop.
@@ -104,7 +107,7 @@ export const parse = (pattern) => {
   if (!pattern || pattern.length === 0) {
     return [];
   }
-  
+
   return pattern.split("\n")
               .filter((row) => row.length > 0)
               .map(
